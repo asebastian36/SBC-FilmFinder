@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title th:text="${movie.getName()}"></title>
+        <link rel="stylesheet" th:href="@{/css/style.css}">
+        <link rel="shortcut icon" th:href="@{/img/fav-icon.png}" type="image/x-icon">
+        <link rel="stylesheet" href="https://unpkg.com/boxicons@2.1.1/css/boxicons.min.css">
+    </head>
+    <body>
+        <header>
+            <div class="nav container">
+                <!-- Logo -->
+                <a th:href="@{/filmfinder/v1/loged/{id}(id=${user.getId()})}" class="logo">
+                    Film<span>Finder</span>
+                </a>
+
+                <!-- Search box -->
+                <form th:action="@{/filmfinder/v1/search/id/{idUser} (idUser = ${user.getId()})}" method="post">
+                    <div class="search-box">
+                        <input type="text" name="search" id="search-input" placeholder="Search a movie">
+                        <i class="bx bx-search"></i>
+                    </div>
+                </form>
+
+                <!-- User -->
+                <div class="user-dropdown">
+                    <img th:src="@{/img/user.png}" alt="img user" class="user-img" onclick="toggleDropdown()">
+                    <div id="userDropdownContent" class="dropdown-content">
+                        <a href="#">My profile</a>
+                        <a th:href="@{/filmfinder/v1/}">Exit</a>
+                    </div>
+                </div>
+
+                <!-- NavBar-->
+                <div class="navbar">
+                    <a th:href="@{/filmfinder/v1/loged/{id}(id=${user.getId()})}" class="nav-link nav-active">
+                        <i class="bx bx-home"></i>
+                        <span class="nav-link-title">Home</span>
+                    </a>
+
+                    <a th:href="@{/filmfinder/v1/id/{id}/explore(id=${user.getId()})}" class="nav-link">
+                        <i class="bx bx-compass"></i>
+                        <span class="nav-link-title">Explore</span>
+                    </a>
+
+
+                    <a th:href="@{/filmfinder/v1/reviewed/{id}(id=${user.getId()})}" class="nav-link">
+                        <i class="bx bx-heart"></i>
+                        <span class="nav-link-title">Reviewed</span>
+                    </a>
+                </div>
+            </div>
+        </header>
+
+        <!-- Play Movie Container -->
+        <div class="play-container container">
+
+            <!-- image -->
+            <img th:src="${movie.getPoster()}" th:alt="${movie.getName()}" class="play-img">
+
+            <!-- text -->
+            <div class="play-text">
+                <h2 th:text="${movie.getName()}"></h2>
+
+                <!-- rating -->
+                <div class="rating">
+                    <div th:if="${rating != null}">
+                        <span>Your Rating: </span>
+                        <span th:text="${rating.getRating()}"></span>
+                        <br>
+                        <span><a th:href="@{/filmfinder/v1/edit/id/{idUser}/movie/{idMovie} (idUser = ${user.getId()}, idMovie = ${movie.getId()})}">Edit rating</a></span>
+                        <br>
+                    </div>
+
+                    <div th:if="${rating == null}">
+                        <span>Your Rating: </span>
+                        <span>No ranked</span>
+                        <br>
+                        <span><a th:href="@{/filmfinder/v1/new/id/{idUser}/movie/{idMovie} (idUser = ${user.getId()}, idMovie = ${movie.getId()})}">New rating</a></span>
+                        <br>
+                    </div>
+
+                    <div th:if="${media != null}">
+                        <span>Rating general</span>
+                        <span th:text="${media}"></span>
+                        <br>
+                    </div>
+
+                </div>
+
+                <!-- tag -->
+                <div class="tags" th:each="genre : ${movie.getGenres()}">
+                    <span th:text="${genre.getGenre().getName()}"></span>
+                </div>
+            </div>
+
+            <i class="bx bx-right-arrow play-movie"></i>
+
+            <!-- video container -->
+            <div class="video-container">
+                <!-- video box -->
+                <div class="video-box">
+                    <iframe id="trailer" width="750" height="600" th:src="${movie.getTrailer()}" controls></iframe>
+
+                    <!-- close video icon -->
+                    <i class="bx bx-x close-video"></i>
+                </div>
+            </div>
+        </div>
+
+        <!-- about -->
+        <div class="about-movie container">
+            <h3>Description</h3>
+            <p th:text="${movie.getDescription()}"></p>
+        </div>
+
+        <div class="copyright">
+            <p>&#169; asebastian36 All Right Reserved</p>
+        </div>
+
+        <script th:src="@{/js/swiper-bundle.min.js}"></script>
+        <script th:src="@{/js/main.js}"></script>
+    </body>
+</html>

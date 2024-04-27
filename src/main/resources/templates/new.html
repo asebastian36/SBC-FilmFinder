@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title th:text="${movie.getName()}"></title>
+        <link rel="stylesheet" th:href="@{/css/style.css}">
+        <link rel="shortcut icon" th:href="@{/img/fav-icon.png}" type="image/x-icon">
+        <link rel="stylesheet" href="https://unpkg.com/boxicons@2.1.1/css/boxicons.min.css">
+    </head>
+    <body>
+        <header>
+            <div class="nav container">
+                <!-- Logo -->
+                <a th:href="@{/filmfinder/v1/loged/{id}(id=${user.getId()})}" class="logo">
+                    Film<span>Finder</span>
+                </a>
+
+                <!-- Search box -->
+                <form th:action="@{/filmfinder/v1/search/id/{idUser} (idUser = ${user.getId()})}" method="post">
+                    <div class="search-box">
+                        <input type="text" name="search" id="search-input" placeholder="Search a movie">
+                        <i class="bx bx-search"></i>
+                    </div>
+                </form>
+
+                <!-- User -->
+                <div class="user-dropdown">
+                    <img th:src="@{/img/user.png}" alt="img user" class="user-img" onclick="toggleDropdown()">
+                    <div id="userDropdownContent" class="dropdown-content">
+                        <a href="#">My profile</a>
+                        <a th:href="@{/filmfinder/v1/}">Exit</a>
+                    </div>
+                </div>
+
+                <!-- NavBar-->
+                <div class="navbar">
+                    <a th:href="@{/filmfinder/v1/loged/{id}(id=${user.getId()})}" class="nav-link nav-active">
+                        <i class="bx bx-home"></i>
+                        <span class="nav-link-title">Home</span>
+                    </a>
+
+                    <a th:href="@{/filmfinder/v1/id/{id}/explore(id=${user.getId()})}" class="nav-link">
+                        <i class="bx bx-compass"></i>
+                        <span class="nav-link-title">Explore</span>
+                    </a>
+
+
+                    <a th:href="@{/filmfinder/v1/reviewed/{id}(id=${user.getId()})}" class="nav-link">
+                        <i class="bx bx-heart"></i>
+                        <span class="nav-link-title">Reviewed</span>
+                    </a>
+                </div>
+            </div>
+        </header>
+
+        <!-- Container -->
+        <div class="container">
+            <form class="form" th:action="@{/filmfinder/v1/rating/newRatingSave/id/{idUser}/movie/{idMovie} (idUser = ${user.getId()}, idMovie = ${movie.getId()}) }" method="post">
+                <fieldset>
+                    <legend>New rating</legend>
+                </fieldset>
+
+                <div class="container-camp">
+                    <div class="camp">
+                        <label>Rating</label>
+                        <input class="input-field" name="rating" type="number" min="0" max="10" step="0.01">
+                    </div>
+                </div>
+
+                <div>
+                    <input class="boton w-sm-100" type="submit" value="Save">
+                </div>
+            </form>
+        </div>
+
+        <div class="copyright">
+            <p>&#169; asebastian36 All Right Reserved</p>
+        </div>
+
+        <script th:src="@{/js/swiper-bundle.min.js}"></script>
+        <script th:src="@{/js/main.js}"></script>
+    </body>
+</html>

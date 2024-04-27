@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Results</title>
+        <link rel="stylesheet" th:href="@{/css/style.css}">
+        <link rel="stylesheet" th:href="@{/css/swiper-bundle.min.css}">
+        <link rel="shortcut icon" th:href="@{/img/fav-icon.png}" type="image/x-icon">
+        <link rel="stylesheet" href="https://unpkg.com/boxicons@2.1.1/css/boxicons.min.css">
+    </head>
+    <body>
+        <header>
+            <div class="nav container">
+                <!-- Logo -->
+                <a th:href="@{/filmfinder/v1/loged/{id}(id=${user.getId()})}" class="logo">
+                    Film<span>Finder</span>
+                </a>
+
+                <!-- Search box -->
+                <form th:action="@{/filmfinder/v1/search/id/{idUser} (idUser = ${user.getId()})}" method="post">
+                    <div class="search-box">
+                        <input type="text" name="search" id="search-input" placeholder="Search a movie">
+                        <i class="bx bx-search"></i>
+                    </div>
+                </form>
+
+                <!-- User -->
+                <div class="user-dropdown">
+                    <img th:src="@{/img/user.png}" alt="img user" class="user-img" onclick="toggleDropdown()">
+                    <div id="userDropdownContent" class="dropdown-content">
+                        <a href="#">My profile</a>
+                        <a th:href="@{/filmfinder/v1/}">Exit</a>
+                    </div>
+                </div>
+
+                <!-- NavBar-->
+                <div class="navbar">
+                    <a th:href="@{/filmfinder/v1/loged/{id}(id=${user.getId()})}" class="nav-link nav-active">
+                        <i class="bx bx-home"></i>
+                        <span class="nav-link-title">Home</span>
+                    </a>
+
+                    <a th:href="@{/filmfinder/v1/id/{id}/explore(id=${user.getId()})}" class="nav-link">
+                        <i class="bx bx-compass"></i>
+                        <span class="nav-link-title">Explore</span>
+                    </a>
+
+                    <a th:href="@{/filmfinder/v1/reviewed/{id}(id=${user.getId()})}" class="nav-link">
+                        <i class="bx bx-heart"></i>
+                        <span class="nav-link-title">Reviewed</span>
+                    </a>
+                </div>
+            </div>
+        </header>
+
+        <!-- Movies -->
+        <section class="movies container" id="movies">
+            <!-- Heading -->
+            <div class="heading">
+                <h2 class="heading-title">Movies finded</h2>
+            </div>
+
+            <!-- Content -->
+            <div class="movies-content">
+
+                <!-- Movie 1 -->
+                <div class="movie-box" th:each="movie : ${movies}">
+                    <!-- image -->
+                    <img th:src="${movie.getImage()}" th:alt="${movie.getName()}" class="movie-box-img">
+
+                    <!-- text -->
+                    <div class="box-text">
+                        <!-- title -->
+                        <h2 class="movie-title" th:text="${movie.getName()}"></h2>
+
+                        <!-- Genre -->
+                        <span class="movie-type">Action</span>
+
+                        <!-- Trailer -->
+                        <a th:href="@{/filmfinder/v1/id/{userId}/movie/{movieId} (userId=${user.getId()}, movieId=${movie.getId()})}" class="watch-btn play-btn">
+                            <i class="bx bx-right-arrow"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <div class="next-page">
+            <a href="#" class="next-btn">Next Page</a>
+        </div>
+
+        <div class="copyright">
+            <p>&#169; asebastian36 All Right Reserved</p>
+        </div>
+
+        <script th:src="@{/js/swiper-bundle.min.js}"></script>
+        <script th:src="@{/js/main.js}"></script>
+    </body>
+</html>
